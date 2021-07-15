@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.sqlite3'
 app.secret_key = '1safdaer34'
 
-app.permanent_session_lifetime = timedelta(seconds=30)
+app.permanent_session_lifetime = timedelta(minutes=2)
 
 db = SQLAlchemy(app)
 
@@ -76,7 +76,20 @@ def delete_post(post_id):
         post = Posts.query.filter_by(id=post_id).first()
         db.session.delete(post)
         db.session.commit()
-        flash('Successfully deleted!')
+        flash(f'Successfully deleted post {post.id}')
+    else:
+        flash('Sign in as an admin first')
+    return redirect(url_for('index'))
+
+
+@app.route('/admin/delete-all')
+def delete_all():
+    if 'admin' in session:
+        posts = Posts.query.all()
+        for post in posts:
+            db.session.delete(post)
+            db.session.commit()
+        flash('Successfully cleared database!')
     else:
         flash('Sign in as an admin first')
     return redirect(url_for('index'))
