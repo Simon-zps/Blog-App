@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Database</title>
+</head>
+<body>
+    {% for i in posts %}
+    <h1>{{ i.id }}  {{ i.title }}</h1>
+    {{ i.subtitle }}
+    {{ i.author }}
+    {{ i.date }}
+    {{ i.content }}
+    {% endfor %}
+</body>
+</html>
