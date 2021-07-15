@@ -58,12 +58,15 @@ def admin():
     if 'admin' in session:
         flash('Admin already logged in')
         return redirect(url_for('index'))
-    elif request.method == 'POST':
-        login = request.form['login']
-        password = request.form['password']
-        session['admin'] = login
-        flash('Success, logged in')
+
+    if request.method == 'POST':
+        if request.form['login'] == 'admin' and request.form['password'] == '1234':
+            session['admin'] = 'admin'
+            flash('Success, logged in')
+        else:
+            flash('Login or password is wrong, try again')
         return redirect(url_for('index'))
+
     return render_template('admin.html')
 
 
