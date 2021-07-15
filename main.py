@@ -69,9 +69,13 @@ def admin():
 
 @app.route('/admin/deletepost/<int:post_id>')
 def delete_post(post_id):
-    post = Posts.query.filter_by(id=post_id).first()
-    db.session.delete(post)
-    db.session.commit()
+    if 'admin' in session:
+        post = Posts.query.filter_by(id=post_id).first()
+        db.session.delete(post)
+        db.session.commit()
+        flash('Successfully deleted!')
+    else:
+        flash('Sign in as an admin first')
     return redirect(url_for('index'))
 
 
